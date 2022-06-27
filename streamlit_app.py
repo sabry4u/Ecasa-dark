@@ -13,6 +13,17 @@ from PIL import Image
 #from turtle import home
 #import tkinter as TK
 #import _tkinter
+import http.client
+
+conn = http.client.HTTPConnection("nocodb-v91-10.herokuapp.com")
+
+headers = { 'xc-auth': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhYnJ5NHVAZ21haWwuY29tIiwiZmlyc3RuYW1lIjpudWxsLCJsYXN0bmFtZSI6bnVsbCwiaWQiOiJ1c19oN3dsOWZtZXFqNjdnbSIsInJvbGVzIjoidXNlcixzdXBlciIsInRva2VuX3ZlcnNpb24iOiIwNjhiYjIxMGQxZjQwODc2ZTBjNTkzZDg1MzE3YzcwNDQ2OGRiZWNjODMyMzJmNTU0MzU2ZmNkNDhmOWYxN2Q3YmY3YzIxNTE0YWQ1OTBkNiIsImlhdCI6MTY1NjI3NTI4MH0.6RNj4xqm24Mjq7oplKwRrOulW2haC3fICeGc8QVp9bE" }
+
+conn.request("GET", "/api/v1/db/data/noco/p_t9xx7wmf8gx9zk/Teams/views/Teams?limit=25&offset=0&where=", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
 
 image = Image.open('Ecasa.jpg')
 lvl_rtng = [1,2,3,4,5]
@@ -156,6 +167,7 @@ def main():
 
                     new_data = {"Quarter":timeline,"Chapter":chapter,"Emp ID":empid,"Emp Name":empname,"Paygrade":paygrd,"Big Picture":int(bgpic),"Data":int(data_skill),"Design":int(design),"Devops":int(devops),"Inner Source":int(inrsrc),"Infrastructure":int(infra),"Professional":int(prfsnl),"Security":int(secrty),"Tech":int(tech),"Testing":int(test_skill),"AWOW":int(awow),"Dreyfus":float(drey_score),"Buiz Goal-1":int(bsg1),"Buiz Goal-2":int(bsg2),"Buiz Goal-3":int(bsg3),"BSG":float(bsg_score),"P2W":int(lsg1),"GBE":int(lsg2),"ST":int(lsg3),"LSG":float(lsg_score)}
                     st.info("Your data has been saved successfully")
+                    st.info(data.decode("utf-8"))
                     df = df.append(new_data,ignore_index=True)
                     df.to_excel("ECASA-DB.xlsx",index=False)
 
